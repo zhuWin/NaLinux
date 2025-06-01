@@ -104,7 +104,7 @@ SCANTOASCII ScanToAscii[] = {
 {0x39,  ' ',  ' ' },
 
 {0x1c,  '\r', '\r'},
-// {0x0e,  0x08, 0x08}, /* backspace */ // Disabled as it is broken here. Will be fixed in the next releases
+{0x0e,  0x08, 0x08}, /* backspace */
 
 {0, 0,  0}
 };
