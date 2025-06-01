@@ -65,10 +65,7 @@ From a Release Build. Just open the install.cmd which will do everything for you
 > [!NOTE]
 > remove.reg and install.bat doesn't work in Windows PE. Don't even try it.
 
-# Limited Features
-
-Backspace has been Disabled. Due to it being Broken.
-
+# Limited Feature
 No ANSI sequences due to it being unsupported in Native Mode.
 
 # Some Screenshots of NativeLinux running.
