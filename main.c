@@ -22,6 +22,7 @@ void mini_rv32ima_putchar(char c) {
     }
     
     if (c == '\b') {
+	// TODO: Fix crash when backspacing on new lines
         RtlCliPutChar('\r');
         RtlClipBackspace();
         RtlCliPutChar(' ');
