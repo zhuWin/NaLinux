@@ -1,8 +1,6 @@
 #include "precomp.h"
 #include "BootImage.h"
 
-HANDLE hKeyboard;
-
 #define BOOT_IMAGE_SIZE 2532208
 
 BOOLEAN Vt100Parsing = FALSE;
@@ -50,25 +48,30 @@ int mini_rv32ima_key_hit(void) {
     IO_STATUS_BLOCK Iosb;
     LARGE_INTEGER ByteOffset;
     NTSTATUS Status;
+    int i;
 
     // Clean up memory
-    RtlZeroMemory(&Iosb, sizeof(Iosb));
-    RtlZeroMemory(&ByteOffset, sizeof(ByteOffset));
-    RtlZeroMemory(&g_KeyboardData, sizeof(KEYBOARD_INPUT_DATA));
+    RtlCliOpenAllInputDevices(hKeyboard, KeyboardType); // Setup all keyboards
+    for (i = 0; i < 64 && hKeyboard[i]; ++i) {
+        RtlZeroMemory(&Iosb, sizeof(Iosb));
+        RtlZeroMemory(&ByteOffset, sizeof(ByteOffset));
+        RtlZeroMemory(&g_KeyboardData, sizeof(KEYBOARD_INPUT_DATA));
 
-    // Try to read the data synchronously
-    Status = NtReadFile(hKeyboard, NULL, NULL, NULL, &Iosb, &g_KeyboardData, sizeof(KEYBOARD_INPUT_DATA), &ByteOffset, NULL);
+        // Try to read the data synchronously
+        Status = NtReadFile(hKeyboard[i], NULL, NULL, NULL, &Iosb, &g_KeyboardData, sizeof(KEYBOARD_INPUT_DATA), &ByteOffset, NULL);
 
-    if (NT_SUCCESS(Status) && Iosb.Information == sizeof(KEYBOARD_INPUT_DATA)) {
-        // A key hit has been detected, return.
-        return 1;
-    } else if (Status == STATUS_PENDING) {
-        // No input to read at the moment, cancel read and return.
-        NtCancelIoFile(hKeyboard, &Iosb);
-        return 0;
-    } else {
-        return 0;
+        if (NT_SUCCESS(Status) && Iosb.Information == sizeof(KEYBOARD_INPUT_DATA)) {
+            // A key hit has been detected, return.
+            return 1;
+        } else if (Status == STATUS_PENDING) {
+            // No input to read at the moment, cancel read and continue checking for other keyboards inputs.
+            NtCancelIoFile(hKeyboard[i], &Iosb);
+            continue;
+        } else {
+            continue;
+        }
     }
+    return 0;
 }
 
 int mini_rv32ima_get_key(void) {
@@ -136,9 +139,7 @@ NTSTATUS main() {
     uint32_t* dtb;
     uint32_t validram;
     ULONG_PTR dtbPtr;
-
-    // Setup keyboard input
-    Status = RtlCliOpenInputDevice(&hKeyboard, KeyboardType);
+    int i;
 
     memory = mini_rv32ima_malloc(RAM_SIZE);
     RtlZeroMemory(memory, RAM_SIZE);
@@ -175,7 +176,7 @@ NTSTATUS main() {
         }
     }
 
-    NtClose(hKeyboard);
+    for (i = 0; i < 64 && hKeyboard[i]; ++i) NtClose(hKeyboard[i]);
     RtlFreeHeap(RtlGetProcessHeap(), 0, memory);
 
     if (reboot == TRUE) {

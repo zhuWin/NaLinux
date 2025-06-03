@@ -149,6 +149,53 @@ RtlClipBackspace(VOID)
 }
 
 NTSTATUS
+RtlCliOpenAllInputDevices(OUT HANDLE* KeyboardHandles, IN CON_DEVICE_TYPE Type)
+{
+    WCHAR deviceName[64];
+    UNICODE_STRING Driver;
+    OBJECT_ATTRIBUTES ObjectAttributes;
+    IO_STATUS_BLOCK Iosb;
+    NTSTATUS Status;
+    HANDLE hDriver;
+    ULONG count = 0;
+    ULONG i;
+
+    for (i = 0; i < 64 /* MAX_KEYBOARDS */; ++i)
+    {
+        if (Type == KeyboardType) {
+            swprintf(deviceName, L"\\Device\\KeyboardClass%lu", i);
+            RtlInitUnicodeString(&Driver, deviceName);
+        }
+
+        InitializeObjectAttributes(&ObjectAttributes, &Driver, OBJ_CASE_INSENSITIVE, NULL, NULL);
+
+        Status = NtCreateFile(
+            &hDriver,
+            SYNCHRONIZE | GENERIC_READ | FILE_READ_ATTRIBUTES,
+            &ObjectAttributes,
+            &Iosb,
+            NULL,
+            FILE_ATTRIBUTE_NORMAL,
+            0,
+            FILE_OPEN,
+            FILE_DIRECTORY_FILE,
+            NULL,
+            0
+        );
+
+        if (NT_SUCCESS(Status))
+        {
+            KeyboardHandles[i] = hDriver;
+            count++;
+        } else {
+            continue;
+        }
+    }
+
+    return count > 0 ? STATUS_SUCCESS : STATUS_UNSUCCESSFUL;
+}
+
+/*NTSTATUS
 RtlCliOpenInputDevice(OUT PHANDLE Handle,
     IN CON_DEVICE_TYPE Type)
 {
@@ -203,7 +250,7 @@ RtlCliOpenInputDevice(OUT PHANDLE Handle,
     //
     *Handle = hDriver;
     return Status;
-}
+}*/
 
 NTSTATUS
 RtlCliShutdown(VOID)

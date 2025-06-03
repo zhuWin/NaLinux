@@ -47,10 +47,16 @@ RtlClipBackspace(
 //
 // Input functions
 //
+//NTSTATUS
+//RtlCliOpenInputDevice(
+//    OUT PHANDLE Handle,
+//    IN CON_DEVICE_TYPE Type
+//);
+
 NTSTATUS
-RtlCliOpenInputDevice(
-    OUT PHANDLE Handle,
-    IN CON_DEVICE_TYPE Type
+RtlCliOpenAllInputDevices(
+      OUT HANDLE* KeyboardHandles, 
+      IN CON_DEVICE_TYPE Type
 );
 
 //
@@ -67,7 +73,7 @@ RtlCliReboot(
 );
 
 // Keyboard:
-HANDLE hKeyboard;
+HANDLE hKeyboard[64];
 
 typedef struct _KBD_RECORD {
   WORD  wVirtualScanCode;
