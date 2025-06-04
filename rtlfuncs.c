@@ -174,7 +174,7 @@ RtlCliOpenAllInputDevices(OUT HANDLE* KeyboardHandles, IN CON_DEVICE_TYPE Type)
     for (i = 0; i < 64 /* MAX_KEYBOARDS */; ++i)
     {
         if (Type == KeyboardType) {
-	        swprintf(deviceName, L"\\Device\\KeyboardClass%lu", i);
+	    swprintf(deviceName, L"\\Device\\KeyboardClass%lu", i);
             RtlInitUnicodeString(&Driver, deviceName);
         }
 
