@@ -148,6 +148,17 @@ RtlClipBackspace(VOID)
     return NtDisplayString(&BackString);
 }
 
+// Stub for Windows 2000
+#define __declspec(x) // temporarily disable __declspec so you can declare function freely
+
+// This causes BSOD in Windows 2000 due of its import being missing so stub it
+NTSYSAPI LONG NTAPI RtlUnhandledExceptionFilter(IN struct _EXCEPTION_POINTERS* ExceptionInfo)
+{
+    return EXCEPTION_CONTINUE_SEARCH;
+}
+
+#undef __declspec // restore __declspec macro to normal
+
 NTSTATUS
 RtlCliOpenAllInputDevices(OUT HANDLE* KeyboardHandles, IN CON_DEVICE_TYPE Type)
 {
@@ -163,7 +174,7 @@ RtlCliOpenAllInputDevices(OUT HANDLE* KeyboardHandles, IN CON_DEVICE_TYPE Type)
     for (i = 0; i < 64 /* MAX_KEYBOARDS */; ++i)
     {
         if (Type == KeyboardType) {
-            swprintf(deviceName, L"\\Device\\KeyboardClass%lu", i);
+	        swprintf(deviceName, L"\\Device\\KeyboardClass%lu", i);
             RtlInitUnicodeString(&Driver, deviceName);
         }
 
