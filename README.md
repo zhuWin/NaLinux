@@ -1,3 +1,11 @@
+> [!IMPORTANT]
+> **Under Construction**
+> <br />Wait for upload. I managed to make this project buildable by Visual C++ 4.2.
+> 
+> 
+
+
+
 # NativeLinux
 
 Runs Linux in the Windows Native Mode (chkdsk screen). Supports Windows NT 4.0 up to Windows 11 and also Works on the Open Source Project ReactOS.
@@ -15,11 +23,11 @@ Runs Linux in the Windows Native Mode (chkdsk screen). Supports Windows NT 4.0 u
 > <br /> The Normal NativeLinux will give an error: **"The NativeLinux.exe application cannot be run in Win32 mode".**
 
 # How to Build NativeLinux?
-Requires Windows Driver Kit 7.1.0
+Requires MSVC 4.x + Windows NT SDK & DDK 4.0
 
 After Installing. Search for x86 Free Build Enviroment. Open it.
 
-Go to the Source Code of NativeLinux and Type the following Command: `build /g /W` or let a batch do this for you by just typing `b`.
+Go to the Source Code of NativeLinux and Type the following Command: `build /W`.
 
 > [!NOTE]
 > Some Files had to be modified due to many Compilation Errors that includes mini-rv32ima.h
