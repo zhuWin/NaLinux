@@ -77,7 +77,8 @@ From a Release Build. Just open the install.cmd which will do everything for you
 No ANSI sequences due to it being unsupported in Native Mode.
 
 # Some Screenshots of NativeLinux running.
-![image](https://github.com/LuisYeah1234-hub/NativeLinux/assets/64372171/d9f60038-0219-43ae-aa55-87d9fb8258ee)
+<img width="1279" height="958" alt="image" src="https://github.com/user-attachments/assets/594b4e3f-ad09-4bec-8bd1-4e2cf1648465" />
+
 ![image](https://github.com/LuisYeah1234-hub/NativeLinux/assets/64372171/d4324a79-c9e8-450a-a458-8f183d0a0c0c)
 
 # To do
