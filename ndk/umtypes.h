@@ -127,6 +127,154 @@ typedef LONG NTSTATUS, *PNTSTATUS;
 //
 #if !defined(_NTSECAPI_H) && !defined(_SUBAUTH_H) && !defined(_NTSECAPI_)
 
+//
+// HACKHACK: 2026.2.21 zhuWin  
+// Compatibility types for MSVC 4.2 and Windows NT 4.0 DDK
+// Doubao-Seed-Code and Gemini 3.1 Pro (Low)
+//
+#ifndef SIZE_T
+#define SIZE_T ULONG
+#endif
+
+#ifndef PSIZE_T
+typedef SIZE_T *PSIZE_T;
+#endif
+
+#ifndef ULONGLONG
+typedef unsigned __int64 ULONGLONG;
+typedef signed __int64 LONGLONG;
+typedef ULONGLONG *PULONGLONG;
+typedef LONGLONG *PLONGLONG;
+#endif
+
+#ifndef ULONG64
+typedef unsigned __int64 ULONG64;
+typedef signed __int64 INT64;
+typedef ULONG64 *PULONG64;
+typedef INT64 *PINT64;
+#endif
+
+#ifndef KAFFINITY
+typedef ULONG KAFFINITY;
+typedef KAFFINITY *PKAFFINITY;
+#endif
+
+#ifndef FILE_SEGMENT_ELEMENT_DEFINED
+#define FILE_SEGMENT_ELEMENT_DEFINED
+typedef union _FILE_SEGMENT_ELEMENT {
+    PVOID Buffer;
+    ULONGLONG Alignment;
+} FILE_SEGMENT_ELEMENT, *PFILE_SEGMENT_ELEMENT;
+#endif
+
+//
+// API Calling Convention Macros
+//
+#ifndef NTSYSCALLAPI
+#define NTSYSCALLAPI
+#endif
+
+#ifndef NTAPI
+#define NTAPI __stdcall
+#endif
+
+#ifndef FORCEINLINE
+#if defined(_MSC_VER) && (_MSC_VER >= 1200)
+#define FORCEINLINE __forceinline
+#else
+#define FORCEINLINE __inline
+#endif
+#endif
+
+#ifndef _PVECTORED_EXCEPTION_HANDLER_DEFINED
+#define _PVECTORED_EXCEPTION_HANDLER_DEFINED
+typedef LONG (NTAPI *PVECTORED_EXCEPTION_HANDLER)(
+    struct _EXCEPTION_POINTERS *ExceptionInfo
+);
+#endif
+
+//
+// OSVERSIONINFO Structures
+//
+#ifndef OSVERSIONINFOW
+typedef struct _OSVERSIONINFOW {
+    DWORD dwOSVersionInfoSize;
+    DWORD dwMajorVersion;
+    DWORD dwMinorVersion;
+    DWORD dwBuildNumber;
+    DWORD dwPlatformId;
+    WCHAR szCSDVersion[128];
+} OSVERSIONINFOW, *LPOSVERSIONINFOW;
+#endif
+
+#ifndef OSVERSIONINFOEXW
+typedef struct _OSVERSIONINFOEXW {
+    DWORD dwOSVersionInfoSize;
+    DWORD dwMajorVersion;
+    DWORD dwMinorVersion;
+    DWORD dwBuildNumber;
+    DWORD dwPlatformId;
+    WCHAR szCSDVersion[128];
+    WORD wServicePackMajor;
+    WORD wServicePackMinor;
+    WORD wSuiteMask;
+    BYTE wProductType;
+    BYTE wReserved;
+} OSVERSIONINFOEXW, *LPOSVERSIONINFOEXW;
+#endif
+
+//
+// RTL Version Info redefinitions
+//
+typedef OSVERSIONINFOW RTL_OSVERSIONINFOW;
+typedef LPOSVERSIONINFOW PRTL_OSVERSIONINFOW;
+typedef OSVERSIONINFOEXW RTL_OSVERSIONINFOEXW;
+typedef LPOSVERSIONINFOEXW PRTL_OSVERSIONINFOEXW;
+
+//
+// GUID Definitions
+//
+#ifndef GUID_DEFINED
+#define GUID_DEFINED
+typedef struct _GUID {
+    DWORD Data1;
+    WORD Data2;
+    WORD Data3;
+    BYTE Data4[8];
+} GUID;
+#endif
+
+#ifndef _LPGUID_DEFINED
+#define _LPGUID_DEFINED
+typedef GUID *LPGUID;
+#endif
+
+#ifndef IID_DEFINED
+#define IID_DEFINED
+typedef GUID IID;
+typedef GUID *LPIID;
+#endif
+
+#ifndef PNP_VETO_TYPE
+typedef enum _PNP_VETO_TYPE
+{
+    PNP_VetoTypeUnknown,
+    PNP_VetoTypeDevice,
+    PNP_VetoTypeDriver,
+    PNP_VetoTypeInvalidDeviceRequest,
+    PNP_VetoTypeInsufficientPower,
+    PNP_VetoTypeUnsafeRemoval,
+    PNP_VetoTypeLegacyDevice,
+    PNP_VetoTypePortInUse,
+    PNP_VetoTypeHubPort,
+    PNP_VetoTypeMaxDefined
+} PNP_VETO_TYPE, *PPNP_VETO_TYPE;
+#endif
+
+// 
+// END HACKHACK
+// 
+
 typedef struct _UNICODE_STRING
 {
     USHORT Length;
@@ -177,5 +325,109 @@ typedef PSTRING POEM_STRING;
 typedef CONST STRING* PCOEM_STRING;
 typedef STRING CANSI_STRING;
 typedef PSTRING PCANSI_STRING;
+
+#ifndef ANSI_NULL
+#define ANSI_NULL ((CHAR)0)
+#endif
+
+#ifndef _POWER_ACTION_DEFINED
+#define _POWER_ACTION_DEFINED
+typedef enum _POWER_ACTION {
+    PowerActionNone,
+    PowerActionReserved,
+    PowerActionSleep,
+    PowerActionHibernate,
+    PowerActionShutdown,
+    PowerActionShutdownReset,
+    PowerActionShutdownOff,
+    PowerActionWarmEject
+} POWER_ACTION, *PPOWER_ACTION;
+#endif
+
+#ifndef _SYSTEM_POWER_STATE_DEFINED
+#define _SYSTEM_POWER_STATE_DEFINED
+typedef enum _SYSTEM_POWER_STATE {
+    PowerSystemUnspecified = 0,
+    PowerSystemWorking = 1,
+    PowerSystemSleeping1 = 2,
+    PowerSystemSleeping2 = 3,
+    PowerSystemSleeping3 = 4,
+    PowerSystemHibernate = 5,
+    PowerSystemShutdown = 6,
+    PowerSystemMaximum = 7
+} SYSTEM_POWER_STATE, *PSYSTEM_POWER_STATE;
+#endif
+
+#ifndef _POWER_INFORMATION_LEVEL_DEFINED
+#define _POWER_INFORMATION_LEVEL_DEFINED
+typedef ULONG POWER_INFORMATION_LEVEL;
+#endif
+
+#ifndef _JOB_SET_ARRAY_DEFINED
+#define _JOB_SET_ARRAY_DEFINED
+typedef struct _JOB_SET_ARRAY {
+    HANDLE JobHandle;
+    ULONG MemberLevel;
+    ULONG Flags;
+} JOB_SET_ARRAY, *PJOB_SET_ARRAY;
+#endif
+
+#ifndef _JOBOBJECTINFOCLASS_DEFINED
+#define _JOBOBJECTINFOCLASS_DEFINED
+typedef enum _JOBOBJECTINFOCLASS {
+    JobObjectBasicAccountingInformation = 1,
+    JobObjectBasicLimitInformation,
+    JobObjectBasicProcessIdList,
+    JobObjectBasicUIRestrictions,
+    JobObjectSecurityLimitInformation,
+    JobObjectEndOfJobTimeInformation,
+    JobObjectAssociateCompletionPortInformation,
+    JobObjectBasicAndIoAccountingInformation,
+    JobObjectExtendedLimitInformation,
+    JobObjectJobSetInformation,
+    MaxJobObjectInfoClass
+} JOBOBJECTINFOCLASS;
+#endif
+
+#ifndef _PISECURITY_DESCRIPTOR_RELATIVE_DEFINED
+#define _PISECURITY_DESCRIPTOR_RELATIVE_DEFINED
+typedef PVOID PISECURITY_DESCRIPTOR_RELATIVE;
+typedef PVOID PSECURITY_DESCRIPTOR_RELATIVE;
+#endif
+
+#ifndef _WORKERCALLBACKFUNC_DEFINED
+#define _WORKERCALLBACKFUNC_DEFINED
+typedef VOID (NTAPI *WORKERCALLBACKFUNC)(PVOID);
+#endif
+
+#ifndef _WAITORTIMERCALLBACKFUNC_DEFINED
+#define _WAITORTIMERCALLBACKFUNC_DEFINED
+typedef VOID (NTAPI *WAITORTIMERCALLBACKFUNC)(PVOID, BOOLEAN);
+#endif
+
+#ifndef _SLIST_ENTRY_DEFINED
+#define _SLIST_ENTRY_DEFINED
+typedef struct _SLIST_ENTRY {
+    struct _SLIST_ENTRY *Next;
+} SLIST_ENTRY, *PSLIST_ENTRY;
+
+typedef union _SLIST_HEADER {
+    ULONGLONG Alignment;
+    struct {
+        SLIST_ENTRY Next;
+        WORD   Depth;
+        WORD   Sequence;
+    } DUMMYSTRUCTNAME;
+} SLIST_HEADER, *PSLIST_HEADER;
+#endif
+
+#ifndef _OBJECT_TYPE_LIST_DEFINED
+#define _OBJECT_TYPE_LIST_DEFINED
+typedef struct _OBJECT_TYPE_LIST {
+    WORD Level;
+    WORD Sbz;
+    GUID *ObjectType;
+} OBJECT_TYPE_LIST, *POBJECT_TYPE_LIST;
+#endif
 
 #endif

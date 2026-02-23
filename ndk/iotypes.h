@@ -13,9 +13,35 @@ Abstract:
 Author:
 
     Alex Ionescu (alexi@tinykrnl.org) - Updated - 27-Feb-2006
+    zhuWin (i@mizukoud.icu) - Updated for NT4 DDK & MSVC 4.2 - 21-Feb-2026
 
 --*/
 #ifndef _IOTYPES_H
+
+// 
+// 定义 NT 4 SDK&DDK 缺少的 64 位兼容类型
+// ULONG_PTR 是在 Windows 2000 (NT 5.0) 开发包中为了准备 64 位支持而引入的。
+// 
+
+
+
+// 针对 NT 4.0 / MSVC 4.2 的向下兼容定义
+#ifndef _ULONG_PTR_DEFINED
+    typedef unsigned long ULONG_PTR, *PULONG_PTR;
+    typedef long LONG_PTR, *PLONG_PTR;
+    #define _ULONG_PTR_DEFINED
+#endif
+
+// 如果 NDK 引用了更多 64 位类型
+#ifndef _U64_DEFINED
+    typedef unsigned __int64 UINT64, *PUINT64;
+    #define _U64_DEFINED
+#endif
+
+// end zhuWin 2026-02-21
+
+
+
 #define _IOTYPES_H
 
 //

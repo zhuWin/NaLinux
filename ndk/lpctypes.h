@@ -101,6 +101,22 @@ typedef enum _PORT_INFORMATION_CLASS
 #endif
 
 //
+// HACKHACK: 2026.2.21 zhuWin  
+// Compatibility for MSVC 4.2 and Windows NT 4.0 DDK
+//
+#ifndef USE_LPC6432
+// Ensure PORT_MESSAGE is defined before being used in other headers
+#ifndef PORT_MESSAGE_DEFINED
+#define PORT_MESSAGE_DEFINED
+#endif
+#endif
+
+// 
+// END HACKHACK
+// 
+
+
+//
 // LPC Port Message
 //
 typedef struct _PORT_MESSAGE

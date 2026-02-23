@@ -22,7 +22,7 @@
 */
 
 #ifndef MINIRV32WARN
-	#define MINIRV32WARN( x... );
+	#define MINIRV32WARN(x)
 #endif
 
 #ifndef MINIRV32_DECORATE
@@ -34,23 +34,23 @@
 #endif
 
 #ifndef MINIRV32_POSTEXEC
-	#define MINIRV32_POSTEXEC(...);
+	#define MINIRV32_POSTEXEC(pc, ir, trap)
 #endif
 
 #ifndef MINIRV32_HANDLE_MEM_STORE_CONTROL
-	#define MINIRV32_HANDLE_MEM_STORE_CONTROL(...);
+	#define MINIRV32_HANDLE_MEM_STORE_CONTROL(addy, rs2)
 #endif
 
 #ifndef MINIRV32_HANDLE_MEM_LOAD_CONTROL
-	#define MINIRV32_HANDLE_MEM_LOAD_CONTROL(...);
+	#define MINIRV32_HANDLE_MEM_LOAD_CONTROL(rsval, rval)
 #endif
 
 #ifndef MINIRV32_OTHERCSR_WRITE
-	#define MINIRV32_OTHERCSR_WRITE(...);
+	#define MINIRV32_OTHERCSR_WRITE(csrno, writeval)
 #endif
 
 #ifndef MINIRV32_OTHERCSR_READ
-	#define MINIRV32_OTHERCSR_READ(...);
+	#define MINIRV32_OTHERCSR_READ(csrno, rval)
 #endif
 
 #ifndef MINIRV32_CUSTOM_MEMORY_BUS

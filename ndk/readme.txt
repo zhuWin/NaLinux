@@ -6,7 +6,7 @@ Native Development Kit README
 
 0.1 COPYRIGHT
 
-The NDK is Copyright ©2005-2008 Alex Ionescu.
+The NDK is Copyright ï¿½2005-2008 Alex Ionescu.
 
 0.2 CONTACT INFORMATION
 
