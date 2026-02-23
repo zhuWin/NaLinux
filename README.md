@@ -6,7 +6,7 @@
 
 # Why does this fork exist?
 
-Just realised versions like NT 4.0 and 2000 Beta2 **actually** don't check the value of the subsystem version after backported this project to MSVC 4.
+Just realised versions like NT 4.0 and 2000 Beta2 just **actually** IGNORE the value of the subsystem version after backported this project to MSVC 4.
 
 I'm a fool.
 
